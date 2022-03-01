@@ -21,11 +21,11 @@ import static io.qameta.allure.Allure.step;
 
 public class GithubIssueCheckTest {
 
-    private static final GithubAllureStepsAnnotationPage stepsPage = new GithubAllureStepsAnnotationPage();
+    private GithubAllureStepsAnnotationPage stepsPage = new GithubAllureStepsAnnotationPage();
     private static final String
-            TestURL = "https://github.com",
-            TestRepository = "eroshenkoam/allure-example",
-            TestIssue = "С Новым Годом (2022)";
+            TEST_URL = "https://github.com",
+            TEST_REPOSITORY = "eroshenkoam/allure-example",
+            TEST_ISSUE = "С Новым Годом (2022)";
 
     @BeforeEach
     void precondition() {
@@ -41,57 +41,57 @@ public class GithubIssueCheckTest {
     @Owner("KELONMYOSA")
     @Feature("Изучаем подходы к разметке в Allure")
     @DisplayName("Проверка видимости Issue через Listener")
-    @Link(value = "Testing URL", url = TestURL)
+    @Link(value = "Testing URL", url = TEST_URL)
     public void githubIssueCheckTest() {
-        Allure.parameter("Название репозитория", TestRepository);
-        Allure.parameter("Название Issue", TestIssue);
+        Allure.parameter("Название репозитория", TEST_REPOSITORY);
+        Allure.parameter("Название Issue", TEST_ISSUE);
 
         SelenideLogger.addListener("allure", new AllureSelenide());
 
-        open(TestURL);
+        open(TEST_URL);
 
         $("[data-test-selector=\"nav-search-input\"]").click();
-        $("[data-test-selector=\"nav-search-input\"]").setValue(TestRepository).pressEnter();
-        $(By.linkText(TestRepository)).click();
+        $("[data-test-selector=\"nav-search-input\"]").setValue(TEST_REPOSITORY).pressEnter();
+        $(By.linkText(TEST_REPOSITORY)).click();
         $(By.partialLinkText("Issue")).click();
 
-        $(withText(TestIssue)).shouldBe(visible);
+        $(withText(TEST_ISSUE)).shouldBe(visible);
     }
 
     @Test
     @Owner("KELONMYOSA")
     @Feature("Изучаем подходы к разметке в Allure")
     @DisplayName("Проверка видимости Issue через лямбда-шаги")
-    @Link(value = "Testing URL", url = TestURL)
+    @Link(value = "Testing URL", url = TEST_URL)
     public void githubIssueCheckTestSteps() {
-        Allure.parameter("Название репозитория", TestRepository);
-        Allure.parameter("Название Issue", TestIssue);
+        Allure.parameter("Название репозитория", TEST_REPOSITORY);
+        Allure.parameter("Название Issue", TEST_ISSUE);
 
         SelenideLogger.addListener("allure", new AllureSelenide());
 
-        step("Открываем главную страницу GitHub", () -> open(TestURL));
-        step("Ищем репозиторий " + TestRepository, () -> {
+        step("Открываем главную страницу GitHub", () -> open(TEST_URL));
+        step("Ищем репозиторий " + TEST_REPOSITORY, () -> {
             $("[data-test-selector=\"nav-search-input\"]").click();
-            $("[data-test-selector=\"nav-search-input\"]").setValue(TestRepository).pressEnter();
+            $("[data-test-selector=\"nav-search-input\"]").setValue(TEST_REPOSITORY).pressEnter();
         });
-        step("Открываем репозиторий " + TestRepository, () -> $(By.linkText(TestRepository)).click());
+        step("Открываем репозиторий " + TEST_REPOSITORY, () -> $(By.linkText(TEST_REPOSITORY)).click());
         step("Переходим во вкладку \"Issue\"", () -> $(By.partialLinkText("Issue")).click());
-        step("Проверяем наличие заголовка \"" + TestIssue + "\"", () -> $(withText(TestIssue)).shouldBe(visible));
+        step("Проверяем наличие заголовка \"" + TEST_ISSUE + "\"", () -> $(withText(TEST_ISSUE)).shouldBe(visible));
     }
 
     @Test
     @Owner("KELONMYOSA")
     @Feature("Изучаем подходы к разметке в Allure")
     @DisplayName("Проверка видимости Issue через аннотацию @Step")
-    @Link(value = "Testing URL", url = TestURL)
+    @Link(value = "Testing URL", url = TEST_URL)
     public void githubIssueCheckTestAnnotationSteps() {
-        Allure.parameter("Название репозитория", TestRepository);
-        Allure.parameter("Название Issue", TestIssue);
+        Allure.parameter("Название репозитория", TEST_REPOSITORY);
+        Allure.parameter("Название Issue", TEST_ISSUE);
         stepsPage
-                .openPage(TestURL)
-                .searchForRepository(TestRepository)
-                .openRepository(TestRepository)
+                .openPage(TEST_URL)
+                .searchForRepository(TEST_REPOSITORY)
+                .openRepository(TEST_REPOSITORY)
                 .openIssueTab()
-                .shouldSeeIssueText(TestIssue);
+                .shouldSeeIssueText(TEST_ISSUE);
     }
 }
